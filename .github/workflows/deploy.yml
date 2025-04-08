@@ -1,0 +1,24 @@
+on:
+  push:
+    branches:
+      - main
+    # Only trigger when the commit message contains 'deploy'
+    # if: "contains(github.event.head_commit.message, 'deploy')"
+
+jobs:
+  setup-build-publish-deploy:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test
